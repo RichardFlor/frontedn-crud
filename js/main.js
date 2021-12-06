@@ -1,11 +1,11 @@
 'use strict';
 import {openModal, closeModal} from './modal.js';
-import{getProdutos, postProduto} from './produtos.js';
+import{getProdutos, postProduto, deletarProduto} from './produtos.js';
 import{preview} from './preview.js';
 
 
 
-const criarLinha = ({foto, nome, preco, categoria}) => {
+const criarLinha = ({foto, nome, preco, categoria, id}) => {
     const linha = document.createElement('tr');
     linha.innerHTML = `
     <td>
@@ -15,15 +15,25 @@ const criarLinha = ({foto, nome, preco, categoria}) => {
     <td>${preco}</td>
     <td>${categoria}</td>
     <td>
-<button type="button" class="button green">
+<button type="button" class="button green" data-idproduto=${id}>
                    editar
                </button>
-<button type="button" class="button red">
+<button type="button" class="button red" data-idproduto=${id}>
                    excluir
                </button>
 </td>
     `;
     return linha;
+}
+
+const handleClickTbody = ({target}) =>{
+    if (target.type === 'button'){
+        const acaoBotao = target.textContent.trim();
+        if (acaoBotao === 'excluir'){
+            deletarProduto(target.dataset.idproduto);
+            carregarProdutos();
+        }
+    }
 }
 
 const carregarProdutos = async ()=>{
@@ -64,3 +74,5 @@ document.getElementById('cancel').addEventListener('click', closeModal);
 document.getElementById('inputFile').addEventListener('change', imagemPreview);
 
 document.getElementById('save').addEventListener('click', salvarProduto);
+
+document.querySelector('.records tbody').addEventListener('click', handleClickTbody)

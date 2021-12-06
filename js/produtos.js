@@ -18,4 +18,27 @@ const postProduto = (produto) => {
     fetch(url, options);
 };
 
-export {getProdutos, postProduto};
+const deletarProduto = (id) =>{
+    const options = {
+    method: 'DELETE',
+    headers: {
+        'content-type':'application/json',
+    },
+};
+    fetch(`${url}/${id}`, options);
+};
+
+    //Função para editar e salvar como edição no servidor
+ const putProduto = (produto) => {
+     const id = produto.id;
+    const options = {
+        method: 'PUT',
+        body: JSON.stringify(produto),
+        headers: {
+            'content-type':'application/json',
+        },
+    };
+    fetch(`${url}/${id}`, options);
+ }
+
+export {getProdutos, postProduto, deletarProduto};
